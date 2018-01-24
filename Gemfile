@@ -5,5 +5,8 @@ gem "sinatra-activerecord"
 gem "sqlite3"
 gem "pry"
 gem "require_all"
+gem "bundler"
+gem "figaro"
 gem "json"
 gem "httparty"
+gem 'google-api-client', '>0.7'

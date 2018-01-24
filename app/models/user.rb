@@ -17,7 +17,6 @@ class User < ActiveRecord::Base
 
   end
 
-Pry.start
 
   #
   # def search(search_input)

@@ -1,3 +1,5 @@
+require 'pry'
+
 class Cli
 
   attr_accessor :current_user
@@ -10,14 +12,14 @@ class Cli
     puts "Are you a 1.New User or an 2.Existing User"
     input = gets.chomp
     case input
-    when "1"
-      create_new_user_cli
-    when "2"
-      login
-    else
-      "Enter either 1 or 2"
-      welcome
+      when "1"
+        create_new_user_cli
+      when "2"
+        login
+      else
+        puts "Enter either 1 or 2"
     end
+    welcome
   end
 
   def create_new_user_cli

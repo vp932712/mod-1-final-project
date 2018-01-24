@@ -1,0 +1,4 @@
+*.yml
+*.db
+*.json
+**/config/secrets.rb
