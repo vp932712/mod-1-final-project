@@ -16,7 +16,7 @@ REDIRECT_URI = 'http://localhost'
 APPLICATION_NAME = 'YouTube Data API Ruby Tests'
 
 # REPLACE WITH NAME/LOCATION OF YOUR client_secrets.json FILE
-CLIENT_SECRETS_PATH = './lib/client_secret.json'
+CLIENT_SECRETS_PATH = './client_secret.json'
 
 # REPLACE FINAL ARGUMENT WITH FILE WHERE CREDENTIALS WILL BE STORED
 CREDENTIALS_PATH = File.join(Dir.home, '.credentials',
@@ -119,7 +119,7 @@ end
 
 search_list_by_keyword(service, 'snippet',
   max_results: 10,
-  q: 'Bruno mars',
+  q: 'taylor',
   type: 'song')
 
 
