@@ -1,2 +1,5 @@
 require_relative '../config/environment.rb'
-require_relative "cli.rb"
+# require_relative "../app/models/cli.rb"
+
+
+binding.pry

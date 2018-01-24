@@ -6,7 +6,4 @@ class Video < ActiveRecord::Base
     Video.find_by(url: url_string)
   end
 
-
-
-
 end
