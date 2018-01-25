@@ -1,43 +1,73 @@
-require 'pry'
+require "pry"
 
 class Cli
 
-  attr_accessor :current_user
+  attr_accessor :current_user, :email, :name
 
   def initilalize
     @current_user = nil
+    @email = email
+    @name = name
   end
 
   def welcome
-    puts "Are you a 1.New User or an 2.Existing User"
+    puts "Are you a new or existing user? \n1.New User \n2.Existing User"
     input = gets.chomp
     case input
-      when "1"
-        create_new_user_cli
-      when "2"
-        login
-      else
-        puts "Enter either 1 or 2"
+    when "1"
+      create_new_user_cli
+    when "2"
+      login
+    when "3"
+      exit
+    else
+      puts "Enter either 1 or 2"
+      welcome
     end
-    welcome
   end
 
   def create_new_user_cli
+    user = {}
     puts "Please enter your E-mail"
-    email = gets.chomp
+    user[:email] = gets.chomp
     puts "Please enter your Name"
-    name = gets.chomp
-    User.create_new_user(email, name)
+    user[:name] = gets.chomp
+    self.current_user = User.find_or_create_by(user)
+    user_choices
   end
 
   def login
     puts "Please enter your email"
-    email = gets.chomp
-    User.find_user(email)
+    email_address = gets.chomp
+    self.current_user = User.find_by(email: email_address)
     puts "Welcome back!"
+    user_choices
+  end
+
+  def user_choices
+    puts "Please choose from the following options:"
+    puts "1.Search for a Song \n2.Exit"
+    input = gets.chomp
+    case input
+    when "1"
+      search
+# put a function that is going to search for a song
+    when "2"
+      exit
+    else
+      "Enter either 1 or 2"
+      user_choices
+    end
+  end
+
+  def search(user)
+    User.search(self.current_user)
   end
 
 
+  def exit
+    "Good-bye"
+  end
 
 
 
