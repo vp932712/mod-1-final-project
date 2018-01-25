@@ -96,12 +96,16 @@ class YoutubeAdapter
       # self.exit
       # need an exit method
     else
-
      system("open #{urls[input-1]}")
      video = Video.create_new_video(urls[input-1], desc[input-1] )
+
      UserVideo.create_new_user_video(user.id, video.id)
+     self.video_options
+
    end
 
   end
+
+
 
 end

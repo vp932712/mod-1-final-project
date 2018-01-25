@@ -42,10 +42,16 @@ class Cli
     puts "Please enter your email"
     puts
     email_address = gets.chomp
-    self.current_user = User.find_by(email: email_address)
-    puts "Welcome back!"
-    puts
-    user_choices
+    if (User.find_by(email: email_address))
+      self.current_user = User.find_by(email: email_address)
+      puts "Welcome back!"
+      puts
+      user_choices
+    else
+      puts "Please check your email and try again"
+      puts
+      login
+    end
   end
 
   def user_choices
@@ -68,7 +74,36 @@ class Cli
     User.search(self.current_user)
   end
 
-  def like
+  def video_options(input)
+    puts "1.like 2. share 3. return"
+    case input
+    when "1"
+      like
+       # User.like(video.id, self.current_user.id) need help
+    when "2"
+      share
+    when "3"
+      self.user_choices
+    when "4"
+      exit
+      # needs and exit function
+    else
+      "Please enter 1, 2, 3 or 4"
+      User.video_options
+    end
+
+  end
+
+  def watch_videos
+    description = []
+    url = []
+    current_user.videos.each do |obj|
+      description.push(obj.description)
+      url.push(obj.URL)
+    end
+    description.each do |str|
+      puts "#{str}"
+    end
 
   end
 
