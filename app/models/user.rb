@@ -2,13 +2,34 @@ class User < ActiveRecord::Base
   has_many :user_videos
   has_many :videos, through: :user_videos
 
-  # def self.find_user(credentials_input)
-  #   User.find_by(email: credentials_input)
-  # end
-  #
-  # def self.create_new_user(email, name)
-  #   User.create(:email => email, :name =>name)
-  # end
+
+  def self.search(user)
+    puts "Please enter an artist or a song name"
+    YoutubeAdapter.search(user)
+  end
+
+
+
+
+  def self.video_options(input)
+    case input
+    when "1"
+      like
+    when "2"
+      share
+    when "3"
+      self.user_choices
+    when "4"
+      exit
+      # needs and exit function
+    else
+      "Please enter 1, 2, 3 or 4"
+      User.video_options
+    end
+
+  end
+
+
 
 
   def self.search(user)
@@ -20,8 +41,9 @@ class User < ActiveRecord::Base
   def play
   end
 
-
   def like
+      UserVideo.where(URl).update_all("like = 'true'")
   end
+
 
 end

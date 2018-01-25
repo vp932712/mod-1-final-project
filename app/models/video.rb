@@ -4,10 +4,10 @@ class Video < ActiveRecord::Base
 
   def self.create_new_video(url_string, des_str)
     if  Video.find_by(URL: url_string)
-      video = Video.find_by(URL: url_string)
-      video.views +=1
-      video.save
-      video
+      video1 = Video.find_by(URL: url_string)
+      video1.views +=1
+      video1.save
+      video1
     else
       Video.create(description: des_str, URL: url_string, views: 1)
     end
@@ -15,6 +15,10 @@ class Video < ActiveRecord::Base
 
 
 
+  #
+  # def self.show_views()
+  #   Video.find_by(URL: url_string)
+  # end
 
   # def self.show_views()
   #   Video.find_by(url: url_string)

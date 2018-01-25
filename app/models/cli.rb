@@ -11,7 +11,7 @@ class Cli
   end
 
   def welcome
-    puts "Are you a new or existing user? \n1.New User \n2.Existing User"
+    puts "Are you a new user or an existing user ? \n\nPlease choose from the following options:\n\n1. New User  \n2. Existing User \n3. Exit"
     input = gets.chomp
     case input
     when "1"
@@ -29,8 +29,10 @@ class Cli
   def create_new_user_cli
     user = {}
     puts "Please enter your E-mail"
+    puts
     user[:email] = gets.chomp
     puts "Please enter your Name"
+    puts
     user[:name] = gets.chomp
     self.current_user = User.find_or_create_by(user)
     user_choices
@@ -38,20 +40,22 @@ class Cli
 
   def login
     puts "Please enter your email"
+    puts
     email_address = gets.chomp
     self.current_user = User.find_by(email: email_address)
     puts "Welcome back!"
+    puts
     user_choices
   end
 
   def user_choices
     puts "Please choose from the following options:"
+    puts
     puts "1.Search for a Song \n2.Exit"
     input = gets.chomp
     case input
     when "1"
       search
-# put a function that is going to search for a song
     when "2"
       exit
     else
@@ -60,10 +64,9 @@ class Cli
     end
   end
 
-  def search(user)
+  def search
     User.search(self.current_user)
   end
-
 
   def exit
     "Good-bye"

@@ -11,5 +11,4 @@ gem "figaro"
 gem "json"
 gem "httparty"
 gem 'google-api-client', '>0.7'
-
 gem 'bundler'

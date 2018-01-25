@@ -62,29 +62,29 @@ class YoutubeAdapter
     credentials
   end
 
-  def self.search_list_by_keyword(service, part, params,user)
+  def self.search_list_by_keyword(service, part, params, user)
     params = params.delete_if { |p, v| v == ''}
     response = service.list_searches(part, params).to_json
     json_response = JSON.parse(response)
     items = json_response.fetch("items")
     no_playlists=[]
     urls=[]
-    desc=[]
-    array=[]
+    desc = []
     videos = items.select do |item|
       if item["id"]["videoId"] != nil
         no_playlists<<item
       end
     end
-    puts ('Choose a song, redo, or exit
-      ')
+    puts 'Choose a song, redo, or exit'
+    puts
     counter=0
     no_playlists.each do |item|
       counter+=1
+      desc << "#{item.fetch("snippet").fetch("title")}"
       urls<<"https://www.youtube.com/watch?v=#{item.fetch("id").fetch("videoId")}"
-      desc<<"#{item.fetch("snippet").fetch("title")}"
       puts ("#{counter}. #{item.fetch("snippet").fetch("title")}.
       ")
+
     end
     puts "#{counter+1}. Redo a search \n\n#{counter+2}. Exit"
 
@@ -93,15 +93,15 @@ class YoutubeAdapter
     when counter+1
       User.search(user)
     when counter+2
-      self.exit
+      # self.exit
+      # need an exit method
     else
 
      system("open #{urls[input-1]}")
-     Video.create_new_video(urls[input-1], desc[input-1])
+     video = Video.create_new_video(urls[input-1], desc[input-1] )
      UserVideo.create_new_user_video(user.id, video.id)
-
    end
-
   end
+
 
 end
