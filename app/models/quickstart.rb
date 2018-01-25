@@ -37,7 +37,7 @@ class YoutubeAdapter
 
     params = {:max_results=>10, :q=>gets.chomp, :type=>"song"}
 
-    search_list_by_keyword(service,'snippet', params,user)
+    search_list_by_keyword(service,'snippet', params, user)
 
   end
 
@@ -102,6 +102,5 @@ class YoutubeAdapter
      UserVideo.create_new_user_video(user.id, video.id)
    end
   end
-
 
 end

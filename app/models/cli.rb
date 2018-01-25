@@ -11,6 +11,7 @@ class Cli
   end
 
   def welcome
+    puts
     puts "Are you a new user or an existing user ? \n\nPlease choose from the following options:\n\n1. New User  \n2. Existing User \n3. Exit"
     input = gets.chomp
     case input
@@ -42,11 +43,19 @@ class Cli
     puts "Please enter your email"
     puts
     email_address = gets.chomp
-    self.current_user = User.find_by(email: email_address)
-    puts "Welcome back!"
-    puts
-    user_choices
+    if (User.find_by(email: email_address))
+      self.current_user = User.find_by(email: email_address)
+      puts "Welcome back!"
+      puts
+      user_choices
+    else
+      puts "Please check your email and try again"
+      puts
+      login
+    end
   end
+
+
 
   def user_choices
     puts "Please choose from the following options:"
@@ -67,6 +76,65 @@ class Cli
   def search
     User.search(self.current_user)
   end
+
+
+  def user_choices
+    puts "Please choose from the following options:"
+    puts
+    puts "1.Search for a Song \n2.Exit"
+    input = gets.chomp
+    case input
+    when "1"
+      search
+    when "2"
+      exit
+    else
+      "Enter either 1 or 2"
+      user_choices
+    end
+  end
+
+  def search
+    User.search(self.current_user)
+  end
+
+  def video_options(input)
+    puts "1.like 2. share 3. return"
+    case input
+    when "1"
+      like
+       # User.like(video.id, self.current_user.id) need help
+    when "2"
+      share
+    when "3"
+      self.user_choices
+    when "4"
+      exit
+      # needs and exit function
+    else
+      "Please enter 1, 2, 3 or 4"
+      User.video_options
+    end
+
+  end
+
+  def watch_videos
+    description = []
+    url = []
+    current_user.videos.each do |obj|
+      description.push(obj.description)
+      url.push(obj.URL)
+    end
+    description.each do |str|
+      puts "#{str}"
+    end
+  end
+
+  def like
+    
+  end
+
+
 
   def exit
     "Good-bye"
