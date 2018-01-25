@@ -10,6 +10,7 @@ class Cli
   end
 
   def welcome
+
     puts
     puts "Are you a new user or an existing user ? \n\nPlease choose from the following options:\n\n1. New User  \n2. Existing User \n3. Exit"
     input = gets.chomp
@@ -71,27 +72,33 @@ class Cli
   end
 
   def search
-    User.search(self.current_user)
+    User.search(self.current_user, self)
   end
 
   def video_options(input)
-    puts "1.like 2. share 3. return"
+
     case input
     when "1"
       like
-       # User.like(video.id, self.current_user.id) need help
+
     when "2"
       share
     when "3"
-      self.user_choices
+     user_choices
     when "4"
       exit
       # needs and exit function
     else
       "Please enter 1, 2, 3 or 4"
-      User.video_options
+     video_options
     end
 
+  end
+
+  def like
+    videoid = current_user.user_videos.last.video_id
+    userid = current_user.id
+    User.like(videoid, userid)
   end
 
   def watch_videos
@@ -106,6 +113,10 @@ class Cli
     end
 
   end
+
+
+
+
 
 
   def exit

@@ -4,7 +4,12 @@ class UserVideo < ActiveRecord::Base
 
 
   def self.create_new_user_video(user_id, video_id)
-    UserVideo.create(user_id: user_id, video_id: video_id, watched: true, liked: false, share: nil)
+   if !(UserVideo.find_by(user_id: user_id, video_id: video_id))
+        UserVideo.create(user_id: user_id, video_id: video_id, watched: true, liked: false, share: nil)
 
   end
+end
+
+
+
 end

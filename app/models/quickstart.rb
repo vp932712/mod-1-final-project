@@ -27,7 +27,7 @@ class YoutubeAdapter
   # SCOPE FOR WHICH THIS SCRIPT REQUESTS AUTHORIZATION
   SCOPE = Google::Apis::YoutubeV3::AUTH_YOUTUBE_READONLY
 
-  def self.search(user)
+  def self.search(user, cli)
 
 
     service = Google::Apis::YoutubeV3::YouTubeService.new
@@ -37,7 +37,7 @@ class YoutubeAdapter
 
     params = {:max_results=>10, :q=>gets.chomp, :type=>"song"}
 
-    search_list_by_keyword(service,'snippet', params, user)
+    search_list_by_keyword(service,'snippet', params, user, cli)
 
   end
 
@@ -62,7 +62,7 @@ class YoutubeAdapter
     credentials
   end
 
-  def self.search_list_by_keyword(service, part, params, user)
+  def self.search_list_by_keyword(service, part, params, user, cli)
     params = params.delete_if { |p, v| v == ''}
     response = service.list_searches(part, params).to_json
     json_response = JSON.parse(response)
@@ -100,7 +100,10 @@ class YoutubeAdapter
      video = Video.create_new_video(urls[input-1], desc[input-1] )
 
      UserVideo.create_new_user_video(user.id, video.id)
-     self.video_options
+
+     puts "1.like 2. share 3. return"
+     input = gets.chomp
+     cli.video_options(input)
 
    end
 
