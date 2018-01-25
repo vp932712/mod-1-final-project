@@ -27,7 +27,7 @@ class YoutubeAdapter
   # SCOPE FOR WHICH THIS SCRIPT REQUESTS AUTHORIZATION
   SCOPE = Google::Apis::YoutubeV3::AUTH_YOUTUBE_READONLY
 
-  def self.search
+  def self.search(user)
 
 
     service = Google::Apis::YoutubeV3::YouTubeService.new
@@ -37,7 +37,7 @@ class YoutubeAdapter
 
     params = {:max_results=>10, :q=>gets.chomp, :type=>"song"}
 
-    search_list_by_keyword(service,'snippet', params)
+    search_list_by_keyword(service,'snippet', params, user)
 
   end
 
@@ -62,36 +62,44 @@ class YoutubeAdapter
     credentials
   end
 
-  def self.search_list_by_keyword(service, part, params)
+  def self.search_list_by_keyword(service, part, params, user)
     params = params.delete_if { |p, v| v == ''}
     response = service.list_searches(part, params).to_json
     json_response = JSON.parse(response)
     items = json_response.fetch("items")
     no_playlists=[]
     urls=[]
+    desc = []
     videos = items.select do |item|
       if item["id"]["videoId"] != nil
         no_playlists<<item
       end
     end
     puts 'Choose a song, redo, or exit'
+    puts
     counter=0
     no_playlists.each do |item|
       counter+=1
+      desc << "#{item.fetch("snippet").fetch("title")}"
       urls<<"https://www.youtube.com/watch?v=#{item.fetch("id").fetch("videoId")}"
       puts ("#{counter}. #{item.fetch("snippet").fetch("title")}.
       ")
+
     end
     puts "#{counter+1}. Redo a search \n\n#{counter+2}. Exit"
 
     input=gets.chomp.to_i
     case input
     when counter+1
-      User.search
+      User.search(user)
     when counter+2
-      self.exit
+      # self.exit
+      # need an exit method
     else
+
      system("open #{urls[input-1]}")
+     video = Video.create_new_video(urls[input-1], desc[input-1] )
+     UserVideo.create_new_user_video(user.id, video.id)
    end
 
   end
