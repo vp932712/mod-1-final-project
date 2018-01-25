@@ -114,13 +114,51 @@ class Cli
 
   end
 
+  def liked_videos
+    url = []
+    description = []
+    arr = current_user.user_videos.select do |obj|
+        obj.liked == true
+     end
+     arr1 = arr.collect do |obj|
+       obj.video_id
+     end.uniq
+     video_arr = Video.find(arr1)
+     video_arr.each do |obj|
+       description << obj.description
+       url << obj.URL
+     end
+     counter = 0
+     description.each do |str|
+       counter += 1
+       puts "#{counter}. #{str}"
+
+     end
+     puts "#{counter+1}. Main Menu \n\n#{counter+2}. Exit"
+     puts
+     puts "Choose a song that you would like to play"
+
+
+     input=gets.chomp.to_i
+     case input
+     when counter+1
+      user_choices
+     when counter+2
+       # self.exit
+       # need an exit method
+     else
+      system("open #{url[input-1]}")
+      user_choices
+    end
+      end
 
 
 
 
 
   def exit
-    "Good-bye"
+    exit
+    # "Good-bye"
   end
 
 

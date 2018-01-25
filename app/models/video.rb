@@ -16,11 +16,7 @@ class Video < ActiveRecord::Base
 
 
 
+
+
   
-
-  #
-  # def self.show_views()
-  #   Video.find_by(URL: url_string)
-  # end
-
 end
