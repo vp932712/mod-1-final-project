@@ -75,7 +75,8 @@ class YoutubeAdapter
         no_playlists<<item
       end
     end
-    puts 'Choose a song, redo, or exit'
+    puts
+    puts 'Choose a song from the list or Redo Search or Main Menu'
     puts
     counter=0
     no_playlists.each do |item|
@@ -86,22 +87,22 @@ class YoutubeAdapter
       ")
 
     end
-    puts "#{counter+1}. Redo a search \n\n#{counter+2}. Exit"
+    puts "#{counter+1}. Redo a search \n\n#{counter+2}. Main Menu"
+    puts
 
     input=gets.chomp.to_i
     case input
     when counter+1
       User.search(user)
     when counter+2
-      # self.exit
-      # need an exit method
+      cli.user_choices
     else
      system("open #{urls[input-1]}")
      video = Video.create_new_video(urls[input-1], desc[input-1] )
 
      UserVideo.create_new_user_video(user.id, video.id)
-
-     puts "1.like 2. share 3. return"
+     puts
+     puts "1. Like \n2. Share \n3. Main Menu \n4. Exit"
      input = gets.chomp
      cli.video_options(input)
 

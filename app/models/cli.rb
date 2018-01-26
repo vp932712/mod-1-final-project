@@ -13,6 +13,7 @@ class Cli
 
     puts
     puts "Are you a new user or an existing user ? \n\nPlease choose from the following options:\n\n1. New User  \n2. Existing User \n3. Exit"
+    puts
     input = gets.chomp
     case input
     when "1"
@@ -32,6 +33,7 @@ class Cli
     puts "Please enter your E-mail"
     puts
     user[:email] = gets.chomp
+    puts
     puts "Please enter your Name"
     puts
     user[:name] = gets.chomp
@@ -56,19 +58,20 @@ class Cli
   end
 
   def user_choices
+    puts
     puts "Please choose from the following options:"
     puts
-    puts "1.Search for a Song \n2.Exit\n3.messages"
+    puts "1. Search for a Song \n2. Messages\n3. Exit"
     input = gets.chomp
     case input
     when "1"
       search
     when "2"
-      exit_the
-    when "3"
       message
+    when "3"
+      exit_the
     else
-      puts "Enter either 1 or 2"
+      puts "Enter either 1 or 2 or 3"
       user_choices
     end
   end
@@ -90,7 +93,7 @@ class Cli
      user_choices
     when "4"
       exit_the
-      # neds and exit function
+
     else
       "Please enter 1, 2, 3 or 4"
      video_options
@@ -102,6 +105,7 @@ class Cli
     videoid = current_user.user_videos.last.video_id
     userid = current_user.id
     User.like(videoid, userid)
+    user_choices
 
   end
 
@@ -148,8 +152,7 @@ class Cli
      when counter+1
       user_choices
      when counter+2
-       # self.exit
-       # need an exit method
+       exit_the
      else
       system("open #{url[input-1]}")
       user_choices
@@ -158,9 +161,24 @@ class Cli
 
 
       def share
+        puts
         puts "Enter your friend's email"
         input = gets.chomp
-       receivers_info =  User.find_by(email: input)
+        if !(User.find_by(email: input))
+          puts "Wrong email or the user is not in our database"
+          puts "1. Re-enter email \n2. Main Menu"
+          puts
+          input = gets.chomp
+          case input
+          when "1"
+            share
+          when "2"
+            user_videos
+          else
+            puts "Enter either 1 or 2"
+          end
+        else
+        receivers_info =  User.find_by(email: input)
         receivers_info.id
         puts "Enter a message to send.."
         msg = gets.chomp
@@ -168,14 +186,20 @@ class Cli
         SharedMessage.create(video_id: videoid, user_id: current_user.id, receivers_id: receivers_info.id , message: msg)
         user_choices
       end
+      end
 
 
       def message
-        obj = SharedMessage.find_by(receivers_id: current_user.id)
-        puts "#{obj.message}"
-       video = Video.find(obj.video_id)
+
+        obj = SharedMessage.where(receivers_id: current_user.id)
+        sender = User.find(obj.last.user_id)
+        puts "From: #{sender.name}"
+        puts "#{obj.last.message}"
+        puts
+       video = Video.find(obj.last.video_id)
        puts "#{video.description}"
-       puts "1.play 2.exit"
+       puts "1. Play \n2. Main Menu"
+       puts
        input = gets.chomp
        case input
        when "1"
@@ -184,7 +208,7 @@ class Cli
        when "2"
          user_choices
        else
-         puts "invalid"
+         puts "Enter either 1 or 2"
        end
 
       end

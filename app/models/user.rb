@@ -3,7 +3,9 @@ class User < ActiveRecord::Base
   has_many :videos, through: :user_videos
 
   def self.search(user, cli)
+    puts
     puts "Please enter an artist or a song name"
+    puts
     YoutubeAdapter.search(user, cli)
   end
 
