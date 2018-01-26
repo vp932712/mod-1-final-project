@@ -20,7 +20,7 @@ class Cli
     when "2"
       login
     when "3"
-      exit
+      exit_the
     else
       "Enter either 1 or 2"
       welcome
@@ -58,15 +58,17 @@ class Cli
   def user_choices
     puts "Please choose from the following options:"
     puts
-    puts "1.Search for a Song \n2.Exit"
+    puts "1.Search for a Song \n2.Exit\n3.messages"
     input = gets.chomp
     case input
     when "1"
       search
     when "2"
-      exit
+      exit_the
+    when "3"
+      message
     else
-      "Enter either 1 or 2"
+      puts "Enter either 1 or 2"
       user_choices
     end
   end
@@ -80,14 +82,15 @@ class Cli
     case input
     when "1"
       like
+      user_choices
 
     when "2"
       share
     when "3"
      user_choices
     when "4"
-      exit
-      # needs and exit function
+      exit_the
+      # neds and exit function
     else
       "Please enter 1, 2, 3 or 4"
      video_options
@@ -99,6 +102,7 @@ class Cli
     videoid = current_user.user_videos.last.video_id
     userid = current_user.id
     User.like(videoid, userid)
+
   end
 
   def watch_videos
@@ -153,10 +157,42 @@ class Cli
       end
 
 
+      def share
+        puts "Enter your friend's email"
+        input = gets.chomp
+       receivers_info =  User.find_by(email: input)
+        receivers_info.id
+        puts "Enter a message to send.."
+        msg = gets.chomp
+        videoid = current_user.user_videos.last.video_id
+        SharedMessage.create(video_id: videoid, user_id: current_user.id, receivers_id: receivers_info.id , message: msg)
+        user_choices
+      end
+
+
+      def message
+        obj = SharedMessage.find_by(receivers_id: current_user.id)
+        puts "#{obj.message}"
+       video = Video.find(obj.video_id)
+       puts "#{video.description}"
+       puts "1.play 2.exit"
+       input = gets.chomp
+       case input
+       when "1"
+         system("open #{video.URL}")
+         user_choices
+       when "2"
+         user_choices
+       else
+         puts "invalid"
+       end
+
+      end
 
 
 
-  def exit
+  def exit_the
+    puts "Good-bye!!"
     exit
     # "Good-bye"
   end

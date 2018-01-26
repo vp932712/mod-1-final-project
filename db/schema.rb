@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180123213000) do
+ActiveRecord::Schema.define(version: 20180125222648) do
+
+  create_table "shared_messages", force: :cascade do |t|
+    t.integer "video_id"
+    t.integer "user_id"
+    t.integer "receivers_id"
+    t.string "message"
+  end
 
   create_table "user_videos", force: :cascade do |t|
     t.integer "user_id"
@@ -26,8 +33,8 @@ ActiveRecord::Schema.define(version: 20180123213000) do
   end
 
   create_table "videos", force: :cascade do |t|
-    t.string  "description"
-    t.string  "URL"
+    t.string "description"
+    t.string "URL"
     t.integer "views"
   end
 
